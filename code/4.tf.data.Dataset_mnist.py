@@ -4,6 +4,7 @@
 Created on Tue Feb  4 15:27:58 2020
 
 tf.data.Dataset使用
+    参考：https://blog.csdn.net/zkbaba/article/details/103206468
 
 @author: tinghai
 """
@@ -16,7 +17,8 @@ import matplotlib.pyplot as plt
 # !pip install tensorflow==2.0.0-beta1
 # !pip install tensorflow-gpu==2.0.0-beta0
 
-#%% tf.data
+
+#%% 1）tf.data使用
 # 创建dataset的几种方式
 dataset = tf.data.Dataset.from_tensor_slices([1,2,3,4,5]) 
 
@@ -76,4 +78,23 @@ history = model.fit(ds_train,
                     steps_per_epoch=train_image.shape[0]//64, # "//" used to be int
                     validation_data=ds_test, 
                     validation_steps=test_image.shape[0]//64) 
+
+
+#%% 2）tf.data并行化
+# map() 和 prefetch() 均加入num_parallel_calls参数
+def _decode_and_resize():
+    pass
+
+ds_train = ds_train.map(
+        map_func=_decode_and_resize,
+        num_parallel_calls=tf.data.experimental.AUTOTUNE)
+
+ds_train = ds_train.prefetch(tf.data.experimental.AUTOTUNE)
+
+
+
+
+
+
+
 

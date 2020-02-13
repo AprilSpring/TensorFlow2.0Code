@@ -80,6 +80,8 @@ model.evaluate()
 model.predict()
 y_ = model(x) #函数式API调用
 model.trainable_variables #模型可训练参数
+model = MLP() #MLP为继承tf.keras.Model的模型
+y_pred = model.call(test_image)
 
 
 #%% model save and reload
@@ -102,6 +104,11 @@ model.load_weights(checkpoint_path) #加载检查点文件中的权重
 checkpoint = tf.train.Checkpoint(optimizer=optimizer, model=model) #初始化检查点文件
 checkpoint.save(file_prefix=cp_prefix) #每个epoch保存一次检查点
 checkpoint.restore(tf.train.lastest_checkpoint(cp_dir)) #恢复最新的检查点文件
+
+
+#%% savedmodel
+tf.saved_model.save(model, "saved/1")
+tf.saved_model.load( "saved/1")
 
 
 #%% 预训练模型

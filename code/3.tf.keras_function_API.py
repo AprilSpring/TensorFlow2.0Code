@@ -4,6 +4,7 @@
 Created on Tue Feb  4 15:25:46 2020
 
 tf.keras函数式API
+    参考：https://blog.csdn.net/zkbaba/article/details/102595417
 
 @author: tinghai
 """
@@ -16,8 +17,17 @@ import matplotlib.pyplot as plt
 # !pip install tensorflow==2.0.0-beta1
 # !pip install tensorflow-gpu==2.0.0-beta0
 
-#%% 函数式API
-# 1) 多输入、单输出
+#%% 函数式API构建模型
+# 1）不同于tf.keras.Sequential()的构建模式，函数式API构建模型示例如下，compile和fit与之前类似
+inputs = tf.keras.Input(shape=(28, 28, 1))
+x = tf.keras.layers.Flatten()(inputs)
+x = tf.keras.layers.Dense(units=100, activation=tf.nn.relu)(x)
+x = tf.keras.layers.Dense(units=10)(x)
+outputs = tf.keras.layers.Softmax()(x)
+model = tf.keras.Model(inputs=inputs, outputs=outputs)
+
+
+# 2) 多输入、单输出
 input1 = tf.keras.Input(shape=(28,28))
 input2 = tf.keras.Input(shape=(28,28))
 
@@ -45,7 +55,7 @@ model.compile(optimizer=tf.keras.optimizers.Adam(lr=0.0005),
 
 
 
-# 2) 单输入、多输出
+# 3) 单输入、多输出
 inputs = tf.keras.Input(shape=(28,28))
 
 x = tf.keras.layers.Flatten()(inputs)

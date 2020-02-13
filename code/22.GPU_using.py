@@ -4,6 +4,7 @@
 Created on Thu Feb  6 15:51:51 2020
 
 GPU的使用和分配
+参见：https://blog.csdn.net/zkbaba/article/details/104101584
 
 @author: tinghai
 """

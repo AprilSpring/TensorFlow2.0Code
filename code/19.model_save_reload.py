@@ -3,7 +3,12 @@
 """
 Created on Wed Feb  5 18:30:11 2020
 
-模型的保存与恢复
+模型的保存与恢复:
+    模型整体：h5文件
+    模型参数：h5文件
+    模型结构：json文件
+    检查点文件：ckpt文件，包括model.fit()中使用回调函数 和 自定义训练模型
+    savedmodel：pb文件
 
 @author: tinghai
 """
@@ -11,7 +16,7 @@ Created on Wed Feb  5 18:30:11 2020
 import tensorflow as tf
 from tensorflow import keras    
 import matplotlib.pyplot as plt
-%matplotlib inline
+# %matplotlib inline
 import numpy as np 
 import glob
 import os
@@ -153,8 +158,9 @@ def train_step(model, images, labels):
 
 # 5.1）保存检查点
 cp_dir = './ckpt_dir/'
-cp_prefix = os.path.join(cp_dir, 'ckpt') #文件前缀设置为ckpt
+# cp_prefix = os.path.join(cp_dir, 'ckpt') #文件前缀设置为ckpt
 checkpoint = tf.train.Checkpoint(optimizer=optimizer, model=model) #初始化检查点文件
+manager = tf.train.CheckpointManager(checkpoint, directory=cp_dir, checkpoint_name='model.ckpt', max_to_keep=3)
 
 def train():
     for epoch in range(10):
@@ -164,7 +170,8 @@ def train():
               .format(epoch, train_loss.result(), train_accuracy.result()))
         train_loss.reset_states()
         train_accuracy.reset_states()
-        checkpoint.save(file_prefix=cp_prefix) #每个epoch保存一次检查点
+        # checkpoint.save(file_prefix=cp_prefix) #每个epoch保存一次检查点
+        manager.save(checkpoint_number=epoch)
 
 train()
 
@@ -173,3 +180,86 @@ checkpoint = tf.train.Checkpoint(optimizer=optimizer, model=model) #初始化检
 checkpoint.restore(tf.train.lastest_checkpoint(cp_dir)) #恢复最新的检查点文件
 test_pred = tf.argmax(model(test_image, training=False), axis=-1).numpy()
 print((test_pred == test_label).sum()/len(test_label)) #return acc
+
+
+# 6）savedmodel保存和加载
+# 与前面介绍的Checkpoint不同，SavedModel包含了一个TensorFlow程序的完整信息,不仅包含参数的权值，
+# 还包含计算的流程（即计算图），参考：https://blog.csdn.net/zkbaba/article/details/104238916
+
+# 6.1）使用tf.keras.models.Sequential构建模型
+# tf.saved_model.save(model,'保存的目标文件夹名称') 和 tf.saved_model.load('保存的目标文件夹名称')
+import tensorflow as tf
+
+num_epochs = 1
+batch_size = 50
+learning_rate = 0.001
+
+# 模型构建
+model = tf.keras.models.Sequential([
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(100, activation=tf.nn.relu),
+    tf.keras.layers.Dense(10),
+    tf.keras.layers.Softmax()
+    ])
+model.compile(
+    optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
+    loss=tf.keras.losses.sparse_categorical_crossentropy,
+    metrics=[tf.keras.metrics.sparse_categorical_accuracy]
+    )
+model.fit(ds_train, epochs=num_epochs, batch_size=batch_size)
+tf.saved_model.save(model, "saved/1")
+
+# 模型调用和测试
+sparse_categorical_accuracy = tf.keras.metrics.SparseCategoricalAccuracy()
+y_pred = model(test_image) # or model.predict()
+sparse_categorical_accuracy.update_state(y_true=test_label, y_pred=y_pred)
+print("test accuracy: %f" % sparse_categorical_accuracy.result())
+
+# 6.2）继承tf.keras.Model构建模型
+# 要点：a. call()方法需要以 @tf.function 修饰，以转化为 SavedModel 支持的计算图
+#      b. 模型推断时需要显式调用model.call()方法
+
+# 继承tf.keras.Model的模型构建
+class MLP(tf.keras.Model):
+    def __init__(self):
+        super().__init__()
+        self.flatten = tf.keras.layers.Flatten()
+        self.dense1 = tf.keras.layers.Dense(units=100, activation=tf.nn.relu)
+        self.dense2 = tf.keras.layers.Dense(units=10)
+
+    @tf.function                    # call()方法需要以 @tf.function 修饰，以转化为 SavedModel 支持的计算图
+    def call(self, inputs):         # [batch_size, 28, 28, 1]
+        x = self.flatten(inputs)    # [batch_size, 784]
+        x = self.dense1(x)          # [batch_size, 100]
+        x = self.dense2(x)          # [batch_size, 10]
+        output = tf.nn.softmax(x)
+        return output
+
+# 模型调用
+model = MLP()
+
+# 模型保存
+tf.saved_model.save(model, "saved/1")
+
+# 模型调用
+new_model = tf.saved_model.load("saved/1")
+
+# 模型测试
+y_pred = new_model.call(test_image) #针对继承tf.keras.Model的模型，需要使用model.call()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
