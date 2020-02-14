@@ -1,5 +1,5 @@
 # TensorFlow2.0Code
-some learning code about tensorflow2.0
+Some learning code about tensorflow2.0.
 
 
 1. tf.keras：构建和训练模型
@@ -64,7 +64,7 @@ some learning code about tensorflow2.0
 
 10. 图像定位
 
-    > 20-xception用于image location
+   > 20-Xception用于image location
 
 11. tf.function
 
@@ -73,6 +73,8 @@ some learning code about tensorflow2.0
 12. GPU使用
 
     > 22-GPU使用
+    >
+    > 31-分布式策略
 
 13. 图像语义分割
 
@@ -102,7 +104,11 @@ some learning code about tensorflow2.0
 
     > 30-tf.TensorArray使用
 
-    
 
-此处，强烈推荐《日月光华的TensorFlow2.0简明实战教程》。
+20. 模型结构绘制
 
+    > 32-tf.keras.utils.plot_model
+
+21. 回归模型
+
+    > 33-regression

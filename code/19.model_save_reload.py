@@ -69,7 +69,12 @@ new_model.evaluate(test_image, test_label,verbose=0) #加载模型评估，与�
 
 #%% 2）模型结构保存
 json_config = model.to_json() #获取模型结构
-reinitialized_model = tf.keras.model.model_from_json(json_config)
+reinitialized_model = tf.keras.model.model_from_json(json_config) #模型结构加载
+
+with open('./model.json', 'w') as json_file: #模型结构写出
+    json_file.write(json_config)
+reinitialized_model = tf.keras.model.model_from_json(open('./model.json').read()) #模型结构读入
+
 reinitialized_model.summary()
 reinitialized_model.evaluate(test_image, test_label,verbose=0) #报错，需要compile之后才可以
 reinitialized_model.compile(opitimizer=tf.keras.optimizer.Adam(lr=0.01),

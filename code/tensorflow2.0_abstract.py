@@ -24,7 +24,10 @@ tf.keras.Input()
 
 tf.keras.utils.to_categorial() #one-hot
 
-tf.keras.Model()
+tf.keras.Model(inputs=inputs, outputs=outputs)
+
+tf.keras.models.Model()
+tf.keras.models.model_from_json()
 
 tf.keras.layers.Flatten()
 tf.keras.layers.Dense()
@@ -32,14 +35,16 @@ tf.keras.layers.concatenate()
 tf.keras.layers.Conv2D()
 tf.keras.layers.Batchnormalization()
 tf.keras.layers.MaxPooling2D()
+tf.keras.layers.UpSampling2D()
 tf.keras.layers.Dropout()
 tf.keras.layers.GlobalAveragePooling2D()
 tf.keras.layers.Conv2DTranspose()
 tf.keras.layers.LSTM()
 tf.keras.layers.GRU()
 
-tf.keras.preprocessing.sequence.pad_sequences()
 tf.keras.preprocessing.image.array_to_img()
+tf.keras.preprocessing.text.Tokenizer()
+tf.keras.preprocessing.sequence.pad_sequences()
 
 tf.keras.optimizers.Adam()
 
@@ -71,6 +76,9 @@ tf.keras.applications.MobileNetV2(include_top=False,
                                   weigths=None, #仅使用MobileNetV2的架构，没有使用权重
                                   input_shape=(224,224,3))
 
+tf.keras.estimator.model_to_estimator(model, config=config)
+
+
 #%% model
 model.add()
 model.summary()
@@ -84,17 +92,28 @@ model = MLP() #MLP为继承tf.keras.Model的模型
 y_pred = model.call(test_image)
 
 
+#%% tf.models
+base_model = VGG16(weights='imagenet', include_top=True)
+model = tf.models.Model(inputs=base_model.input,
+                        outputs=base_model.get_layer('block4_pool').output) #提取子模型
+
+
 #%% model save and reload
 model.save('./my_model.h5')  #模型整体保存
 new_model = tf.keras.models.load_model('./my_model.h5') #加载模型
 
 json_config = model.to_json() #获取模型结构
-model = tf.keras.model.model_from_json(json_config) #加载模型结构
+model = tf.keras.models.model_from_json(json_config) #加载模型结构
+
+with open('./model.json', 'w') as json_file: #模型结构写出
+    json_file.write(json_config)
+model = tf.keras.models.model_from_json(open('./model.json').read()) #模型结构读入
 
 weights = model.get_weights() #获取模型权重
 model.set_weights(weights) #加载模型权重
-model.save_weights('./my_weights.h5') #保存模型权重到磁盘
-model.load_weights('./my_weights.h5') #从磁盘加载模型权重
+
+model.save_weights('./my_weights.h5') #模型权重写出
+model.load_weights('./my_weights.h5') #模型权重读入
 
 model = tf.keras.models.load_model(checkpoint_path) #加载检查点文件
 model.load_weights(checkpoint_path) #加载检查点文件中的权重
@@ -184,6 +203,10 @@ tf.config.experimental.list_physical_devices()
 tf.config.experimental.set_visible_devices()
 tf.config.experimental.set_memory_growth()
 tf.config.experimental.set_virtual_device_configration()
+
+
+#%% tf.estimator
+model = tf.estimator.LinearRegressor(featcols) #回归模型
 
 
 #%% tf.其他
