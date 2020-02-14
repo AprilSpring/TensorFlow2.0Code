@@ -2,113 +2,113 @@
 Some learning code about tensorflow2.0.
 
 
-1. tf.keras：构建和训练模型
 
-   > 0-introduce
-   >
-   > 1-Sequential模式二分类
-   >
-   > 2-mnist示例
+## tf.keras：构建和训练模型
 
-2. tf.keras函数式API
+0-introduce
 
-   > 3-function API
+1-Sequential模式二分类
 
-3. tf.data 加载图片与结构化数据
+2-mnist示例
 
-   > 4-mnist数据集加载
-   >
-   > 5-mnist示例
-   >
-   > 6-卫星分类CNN网络
-   >
-   > 7-文本embedding
+## tf.keras函数式API
 
-4. Eager模式
+3-function API
 
-   > 8-自定义训练模式introduce
-   >
-   > 9-mnist示例tf.GradientTape求解梯度
-   >
-   > 14-猫狗数据集
+## tf.data 加载图片与结构化数据
 
-5. tf.keras.metrics 评估指标
+4-mnist数据集加载
 
-   > 10-metrics introduce
+5-mnist示例
 
-6. Tensorboard
+6-卫星分类CNN网络
 
-   > 11-mnist示例
-   >
-   > 12-tensorboard启动方式
-   >
-   > 13-eager模式下使用tensorboard
-   >
-   > 28-tensorboard.dev使用
+7-文本embedding
 
-7. 预训练模型
+## Eager模式
 
-   > 15-vgg预训练模型预测
-   >
-   > 16-vgg预训练模型fine-tune
-   >
-   > 17-xception预训练模型预测
+8-自定义训练模式introduce
 
-8. 多输出模型
+9-mnist示例tf.GradientTape求解梯度
 
-   > 18-多输出预测模型构建
+14-猫狗数据集
 
-9. 模型保存和加载
+## tf.keras.metrics 评估指标
 
-   > 19-模型保存和加载，包含模型整体、模型结构、模型参数、检查点文件、savedmodel文件的保存和加载
+10-metrics introduce
 
-10. 图像定位
+## Tensorboard
 
-   > 20-Xception用于image location
+11-mnist示例
 
-11. tf.function
+12-tensorboard启动方式
 
-    > 21-自动图运算introduction
+13-eager模式下使用tensorboard
 
-12. GPU使用
+28-tensorboard.dev使用
 
-    > 22-GPU使用
-    >
-    > 31-分布式策略
+## 预训练模型
 
-13. 图像语义分割
+15-vgg预训练模型预测
 
-    > 23-FCN用于图像语义分割
+16-vgg预训练模型fine-tune
 
-14. 文本分类
+17-xception预训练模型预测
 
-    > 24-LSTM用于航空公司评论的文本分类
+## 多输出模型
 
-15. 时序问题预测
+18-多输出预测模型构建
 
-    > 25-LSTM用于空气污染预测
+## 模型保存和加载
 
-16. TFrecord
+19-模型保存和加载，包含模型整体、模型结构、模型参数、检查点文件、savedmodel文件的保存和加载
 
-    > 26-tfrecord生成和读取
+## 图像定位
 
-17. 自定义网络层和评估指标
+20-Xception用于image location
 
-    > 27-自定义网络层和评估指标
+## tf.function
 
-18. Transformer library
+21-自动图运算introduction
 
-    > 29-基于transformer库的BERT预测
+## GPU使用
 
-19. tf.TensorArray
+22-GPU使用
 
-    > 30-tf.TensorArray使用
+31-分布式策略
 
+## 图像语义分割
 
-20. 模型结构绘制
+23-FCN用于图像语义分割
 
-    > 32-tf.keras.utils.plot_model
+## 文本分类
 
-21. 回归模型
+24-LSTM用于航空公司评论的文本分类
 
-    > 33-regression
+## 时序问题预测
+
+25-LSTM用于空气污染预测
+
+## TFrecord
+
+26-tfrecord生成和读取
+
+## 自定义网络层和评估指标
+
+27-自定义网络层和评估指标
+
+## Transformer library
+
+29-基于transformer库的BERT预测
+
+## tf.TensorArray
+
+30-tf.TensorArray使用
+
+## 模型结构绘制
+
+32-tf.keras.utils.plot_model
+
+## 回归模型
+
+33-regression
