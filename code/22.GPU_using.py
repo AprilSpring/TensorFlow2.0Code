@@ -30,4 +30,16 @@ tf.config.experimental.set_virtual_device_configration(gpus[0],
 
 
 
+#%% 模型使用多GPU训练
+from keras.utils import multi_gpu_model
+
+# raw model
+model = tf.keras.Model(input_tensor, x)
+model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['acc'])
+
+# model with multi-GPU
+model2 = multi_gpu_model(model, n_gpus=8)
+model2.compile(optimizer=tf.keras.optimizers.Adam(1e-4), loss='categorical_crossentropy', metrics=['acc'])
+model2.fit()
+
 

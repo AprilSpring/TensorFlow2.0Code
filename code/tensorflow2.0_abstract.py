@@ -41,6 +41,7 @@ tf.keras.layers.GlobalAveragePooling2D()
 tf.keras.layers.Conv2DTranspose()
 tf.keras.layers.LSTM()
 tf.keras.layers.GRU()
+tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(hidden_num, return_sequences=True)) #bilstm
 
 tf.keras.preprocessing.image.array_to_img()
 tf.keras.preprocessing.text.Tokenizer()
@@ -172,10 +173,13 @@ dataset.shuffle()
 dataset.repeat()
 dataset.batch()
 dataset.map(func, num_parallel_calls=AUTOTUNE)
+dataset.filter(func)
 dataset.skip()
 dataset.take()
 dataset.prefetch(AUTOTUNE)
-next(iter(dataset))
+image_batch,label_batch = next(iter(dataset))
+dataset.cache()
+dataset.padded_batch(BATCH_SIZE, padded_shapes=([40], [40])) #填充为最大长度40
 
 
 #%% tf.image
@@ -209,12 +213,22 @@ tf.config.experimental.set_virtual_device_configration()
 model = tf.estimator.LinearRegressor(featcols) #回归模型
 
 
+#%% crf
+import tensorflow_addons as tf_ad
+log_likelihood, transition_params = tf_ad.text.crf_log_likelihood(logits, label_sequences, text_lens) # train step, log_likelihood用于计算loss
+viterbi_path, _ = tf_ad.text.viterbi_decode(logit[:text_len], model.transition_params) #predict step
+
+
 #%% tf.其他
 tf.io.read_file(img_path)
 tf.cast()
 tf.expand_dims()
 tf.reshape()
 tf.argmax()
+tf.logical_and(True, False) #False
+tf.logical_or(True, False) #True
+tf.py_function(func=encode, inp=[pt, en], Tout=[tf.int64, tf.int64])
+tf.nn.softmax()
 
 
 #%% plt

@@ -10,7 +10,7 @@
 
 @author: tinghai
 """
-
+import tensorflow as tf
 # pip install transformers
 # transformers，包含配置类、分词器类、模型类
 

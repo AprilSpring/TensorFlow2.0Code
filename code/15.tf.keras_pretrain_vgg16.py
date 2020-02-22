@@ -9,7 +9,17 @@ tf.keras.applications预训练模型使用
 """
 
 #%% 预训练模型的使用（迁移学习）- 猫狗数据集
-# keras内置预训练网络，比如VGG16、VGG19、ResNet50、Inception v3、Xception等，参考 https://keras.io/zh/applications/
+# keras内置预训练网络，如下：（参考 https://keras.io/zh/applications/）
+# VGG16
+# VGG19
+# Xception
+# ResNet50
+# InceptionV3
+# InceptionResNetV2
+# MobileNet
+# DenseNet
+# NASNet
+
 # ImageNet数据集：训练集120万、验证集5万、测试集10万
 import tensorflow as tf
 from tensorflow import keras    

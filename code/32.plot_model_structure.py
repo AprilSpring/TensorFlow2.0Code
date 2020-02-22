@@ -41,3 +41,9 @@ def build_model():
 build_model()
 
 
+#%%
+from IPython.display import SVG
+from keras.utils.vis_utils import model_to_dot, plot_model
+
+plot_model(model, show_shapes=True, to_file='model_simple.png')
+SVG(model_to_dot(model, show_shapes=True).create(prog='dot', format='svg'))
