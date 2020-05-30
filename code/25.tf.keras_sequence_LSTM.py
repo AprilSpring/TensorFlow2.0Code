@@ -133,7 +133,7 @@ lr_reduce = tf.keras.callbacks.ReduceLROnPlateau(monitor='val_loss',
 model.compile(optimizer='adam', 
               loss='mse', 
               metrics=['mae'])
-history = model.fit(train_x,train_y, 
+history = model.fit(train_x,train_y,
                     epochs=200, 
                     steps_per_epoch=split_b//BATCH_SIZE,
                     validation_data=(test_x,test_y), 
@@ -143,3 +143,20 @@ plt.plot(history.epoch, history.history['mean_absolute_error'], 'r', label='trai
 plt.plot(history.epoch, history.history['val_mean_absolute_error'], 'g', label='validation-loss')
 plt.legend()
 
+
+# 模型评估
+model.evaluate(test_x, test_y, verbose=0)
+
+# 测试集预测
+pred_y = model.predict(test_x)
+
+# 新数据预测
+data_test = data[-120:]
+data_test = data_test.iloc[:,5:]
+data_test = data_test.join(pd.get_dummies(data_test['cbwd']))
+data_test = data_test.drop('cbwd',axis=1, inplace=True)
+data_test.reindex(columns=train_x.columns)
+data_test = (data_test - mean)/std # 使用训练数据的均值和方差，对预测数据进行归一化
+data_test = data_test.to_numpy() #转化成array
+data_test = np.expand_dims(data_test, axis=0) #扩展第一个维度，即batch
+data_y = model.predict(data_test)
