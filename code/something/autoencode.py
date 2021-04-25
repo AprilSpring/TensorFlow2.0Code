@@ -17,6 +17,12 @@ import matplotlib.pyplot as plt
 print(tf.__version__)
 
 (x_train, y_train), (x_test, y_test) = keras.datasets.mnist.load_data()
+
+## 读入图片 (60000, 28, 28)
+
+
+
+
 x_train = x_train.reshape((-1, 28*28)) / 255.0
 x_test = x_test.reshape((-1, 28*28)) / 255.0
 
