@@ -13,6 +13,7 @@ import tensorflow as tf
 import tensorflow.keras as keras
 import tensorflow.keras.layers as layers
 from IPython.display import SVG
+import matplotlib.pyplot as plt
 print(tf.__version__)
 
 (x_train, y_train), (x_test, y_test) = keras.datasets.mnist.load_data()
@@ -29,29 +30,43 @@ outputs = layers.Dense(x_train.shape[1], activation='softmax', name='outputs')(c
 
 auto_encoder = keras.Model(inputs, outputs)
 auto_encoder.summary()
-
 # keras.utils.plot_model(auto_encoder, show_shapes=True)
+auto_encoder.compile(optimizer='adam', loss='binary_crossentropy')
+history = auto_encoder.fit(x_train, x_train, batch_size=64, epochs=100, validation_split=0.1)
+
+pred = auto_encoder.predict(x_test)
+
+plt.figure(figsize=(10,4))
+n = 5
+for i in range(n):
+    ax = plt.subplot(2, n, i+1)
+    plt.imshow(x_test[i].reshape(28,28))
+    plt.gray()
+    ax.get_xaxis().set_visible(False)
+    ax.get_yaxis().set_visible(False)
+
+    ax = plt.subplot(2, n, n+i+1)
+    plt.imshow(pred[i].reshape(28,28))
+    plt.gray()
+    ax.get_xaxis().set_visible(False)
+    ax.get_yaxis().set_visible(False)
+plt.show()
+
+
+## --------------------------------------
 
 encoder = keras.Model(inputs,code)
-keras.utils.plot_model(encoder, show_shapes=True)
+# keras.utils.plot_model(encoder, show_shapes=True)
 
 decoder_input = keras.Input((code_dim,))
 decoder_output = auto_encoder.layers[-1](decoder_input)
 decoder = keras.Model(decoder_input, decoder_output)
-keras.utils.plot_model(decoder, show_shapes=True)
-
-auto_encoder.compile(optimizer='adam',
-                    loss='binary_crossentropy')
-
-
-
-history = auto_encoder.fit(x_train, x_train, batch_size=64, epochs=100, validation_split=0.1)
+# keras.utils.plot_model(decoder, show_shapes=True)
 
 encoded = encoder.predict(x_test)
 decoded = decoder.predict(encoded)
-import matplotlib.pyplot as plt
-plt.figure(figsize=(10,4))
 
+plt.figure(figsize=(10,4))
 n = 5
 for i in range(n):
     ax = plt.subplot(2, n, i+1)
