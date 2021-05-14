@@ -77,9 +77,12 @@ Some learning code about tensorflow2.0.
 
 31-分布式策略
 
+36-多GPU分布
+
 ## 图像语义分割
 
 23-FCN用于图像语义分割
+37-Unet用于图像语义分割
 
 ## 文本分类
 
@@ -97,9 +100,11 @@ Some learning code about tensorflow2.0.
 
 27-自定义网络层和评估指标
 
-## Transformer library
+## Transformer
 
 29-基于transformer库的BERT预测
+
+35-transformer构建
 
 ## tf.TensorArray
 
@@ -112,3 +117,9 @@ Some learning code about tensorflow2.0.
 ## 回归模型
 
 33-regression
+
+## crf实现
+
+34-bilstm_and_crf
+
+

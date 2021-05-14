@@ -126,7 +126,7 @@ sub_model.summary()
 layer_names = ['block5_conv3', 'block4_conv3', 'block3_conv3', 'block5_pool'] #要获取的中间层名称
 layers_output = [conv_base.get_layer(layer_name).output for layer_name in layer_names]
 multi_out_model = tf.keras.models.Model(inputs=conv_base.input, output=layers_output)
-print(multi_out_model.predict(image)) #分别返回4个子模型的预测输出结果
+print(multi_out_model.predict(images)) #分别返回4个子模型的预测输出结果
 multi_out_model.trainable = False
 
 #%% 4）FCN模型构建
